@@ -11,7 +11,7 @@
 
 <meta name="author" content="Felix Degenhardt &amp; Sophie Wagner" />
 
-<meta name="date" content="2025-10-13" />
+<meta name="date" content="2025-10-22" />
 
 <title>Applied Econometrics and Data Science with R - Introduction to R</title>
 
@@ -2843,7 +2843,7 @@ border-radius: 0px;
 <h1 class="title toc-ignore">Applied Econometrics and Data Science with
 R - Introduction to R</h1>
 <h4 class="author">Felix Degenhardt &amp; Sophie Wagner</h4>
-<h4 class="date">2025-10-13</h4>
+<h4 class="date">2025-10-22</h4>
 
 </div>
 
@@ -3024,7 +3024,7 @@ you want to write files in R.</p>
 <p>Insert your folder path between the <code>&quot;&quot;</code>. To check what is
 the current working directory:</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a><span class="fu">getwd</span>() <span class="co"># current working directory</span></span></code></pre></div>
-<pre><code>## [1] &quot;/Users/sophiewagner/Dropbox/Github/Applied_Econometrics_and_Data_Science_with_R/Applied_Econometrics_and_Data_Science_with_R/01_intro&quot;</code></pre>
+<pre><code>## [1] &quot;/Users/valentinkolzer/Nextcloud/Documents/1 Bildung , Arbeit/2 Studium/Master/EPQM/Semester 3/Data Science/GitHub Repo/01_intro&quot;</code></pre>
 <p>The easiest way, is to set up a coherent folder structure and refer
 to <em>relative</em> paths (compared to absolute paths). For example,
 whenever you <code>knit</code> and R-Markdown document, the default
@@ -3254,9 +3254,9 @@ The data will be loaded in a data frame. Please download the survey data
 from Moodle and save it in a new folder in our class folder on your
 laptop (e.g. “00_data/survey/”).</p>
 <p>Read csv file and save in data frame called <code>mydata</code></p>
-<div class="sourceCode" id="cb69"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb69-1"><a href="#cb69-1" tabindex="-1"></a>mydata <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="at">file=</span><span class="st">&quot;../00_data/survey/survey.csv&quot;</span>, <span class="at">header=</span><span class="cn">TRUE</span>, <span class="at">sep=</span><span class="st">&quot;,&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb69"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb69-1"><a href="#cb69-1" tabindex="-1"></a>mydata <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="at">file=</span><span class="st">&quot;../Data/survey.csv&quot;</span>, <span class="at">header=</span><span class="cn">TRUE</span>, <span class="at">sep=</span><span class="st">&quot;,&quot;</span>)</span></code></pre></div>
 <p>What is in the dataset?</p>
-<div class="sourceCode" id="cb70"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb70-1"><a href="#cb70-1" tabindex="-1"></a><span class="co">#View(mydata)</span></span></code></pre></div>
+<div class="sourceCode" id="cb70"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb70-1"><a href="#cb70-1" tabindex="-1"></a><span class="co"># View(mydata)</span></span></code></pre></div>
 <p>Variables? Examples:</p>
 <ul>
 <li><code>erstfach</code>: field of study</li>
@@ -3482,7 +3482,7 @@ we will have a whole session on data visualization in the
 <p>Write the data to your working directory, save in a csv or txt
 file.</p>
 <div class="sourceCode" id="cb94"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb94-1"><a href="#cb94-1" tabindex="-1"></a><span class="co"># Saves the data frame &#39;mydata&#39; in a text file in the working directory.</span></span>
-<span id="cb94-2"><a href="#cb94-2" tabindex="-1"></a><span class="fu">write.table</span>(mydata, <span class="at">file =</span> <span class="st">&quot;../00_data/survey/mydata.txt&quot;</span>, <span class="at">sep =</span> <span class="st">&quot;</span><span class="sc">\t</span><span class="st">&quot;</span>)</span></code></pre></div>
+<span id="cb94-2"><a href="#cb94-2" tabindex="-1"></a><span class="fu">write.table</span>(mydata, <span class="at">file =</span> <span class="st">&quot;../Data/mydata.txt&quot;</span>, <span class="at">sep =</span> <span class="st">&quot;</span><span class="sc">\t</span><span class="st">&quot;</span>)</span></code></pre></div>
 </div>
 <div id="min-classroom-task-1" class="section level1 task-box">
 <h1>10-Min Classroom Task</h1>

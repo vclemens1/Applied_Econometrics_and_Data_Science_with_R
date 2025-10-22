@@ -350,12 +350,12 @@ We are going to load our first data into R. We will use the student survey from 
 Read csv file and save in data frame called `mydata`
 
 ```{r}
-mydata <- read.csv(file="../00_data/survey/survey.csv", header=TRUE, sep=",")
+mydata <- read.csv(file="../Data/survey.csv", header=TRUE, sep=",")
 ```
 
 What is in the dataset?
 ```{r}
-#View(mydata)
+# View(mydata)
 ```
 
 Variables? Examples:
@@ -402,8 +402,6 @@ We can look at missing observations of a specific variable
 sum(is.na(mydata$computer)) # Prints the number if missing for the variable 'computer'.
 
 ```
-
-
 
 ## Correlations
 We can construct a table with correlations for the numeric variables.
@@ -483,7 +481,7 @@ plot(mydata$risiko, mydata$geduldig, xlab = "Risk Affinity", ylab = "Patience")
 Write the data to your working directory, save in a csv or txt file.
 ```{r}
 # Saves the data frame 'mydata' in a text file in the working directory.
-write.table(mydata, file = "../00_data/survey/mydata.txt", sep = "\t")
+write.table(mydata, file = "../Data/mydata.txt", sep = "\t")
 ```
 
 ::: {.task-box}
