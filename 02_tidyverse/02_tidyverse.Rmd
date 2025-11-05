@@ -488,14 +488,49 @@ This may make more sense with grouped means, for example by subject of study. Th
 What are downsides? You create variation that may not be there, and you want to be really careful with this. There are safe ways to impute, though. Think about this: You run a survey (like the SOEP), interview people repeatedly over the years. In one year, you ask them about their year of birth. In the next year, you don't. Since the birth year is **time-invariant**, you can easily impute it for each person!
 
 
+## Filling Time-Invariant Variables
+
+Sometimes you have variables that should be constant for each person (like year of birth, gender, or place of birth), but have missing values in some observations. If you have panel data or repeated observations, you can use `fill()` to copy non-missing values within groups.
+
+Let's create an example to demonstrate this:
+
+```{r}
+# Create example data where some students have missing birth years
+example_data <- tibble(
+  student_id = c(1, 1, 1, 2, 2, 2, 3, 3, 3),
+  semester = c("WiSe23", "SoSe24", "WiSe24", "WiSe23", "SoSe24", "WiSe24", "WiSe23", "SoSe24", "WiSe24"),
+  geburtsjahr = c(2000, NA, NA, NA, 1999, NA, 2001, 2001, 2001),
+  grade = c(2.0, 1.7, 1.3, 2.3, 2.0, 1.7, 1.0, 1.3, 1.7)
+)
+
+example_data
+```
+
+Notice that student 1 has birth year only in the first observation, student 2 only in the second, and student 3 has it in all observations. Since birth year is time-invariant (doesn't change!), we can fill the missing values within each student:
+
+```{r}
+# Fill missing birth years within each student
+example_data_filled <- example_data %>%
+  group_by(student_id) %>% # to apply the filling by student
+  fill(geburtsjahr, .direction = "downup") %>%  # fills in both directions, so it works regardless of where the non-missing value is. other options are "up" or "down", or "downup"
+  ungroup()
+
+example_data_filled
+```
+
+This is extremely useful when:
+- You have longitudinal/panel data
+- Time-invariant characteristics have missing values in some periods
+- You want to avoid dropping entire observations just because one period is missing
+
+
 ## Handling Non-Numeric Variables
 
-Many datasets have non-numeric variables. In this example, `job`, `erstfach_name` and `partei` are categorical variables. K-means clustering works with numerical data and cannot directly handle categorical variables because it calculates the numerical distance between single observations. You cannot simply calculate the numerical distance between categorical variable. 
+Many datasets have non-numeric variables. In this example, `job`, `erstfach_name` and `partei` are categorical variables. Some algorithms only work with numerical data and cannot directly handle categorical variables. Think back about how you treated categorical variables in linear regression. Here are the options:
 
 - **Solutions**:
     - **Binary encoding**: Convert binary variables (e.g., `job`) into 0 (no job) and 1 (has a job). (We have already done this!)
     - **One-hot encoding**: For variables with multiple categories (e.g., `erstfach_name`), create a separate binary column for each category (e.g., BWL = 1 only if erstfach_name == BWL, else 0, Wirtschaftsinformatik = 1 only if ... ).
-    - **Other clustering algorithms**: E.g. Hierarchical clustering (not treated here!) 
 
 
 ```{r}
@@ -505,6 +540,7 @@ library(fastDummies)
 mydata_one_hot <- dummy_cols(mydata, select_columns = "erstfach_name", remove_first_dummy = TRUE, remove_selected_columns = TRUE)
 ```
 
+Sometimes, it makes sense to group very small categories into a larger category. This way, you **avoid having a dummy group with only a small number of observations**
 
 # Outliers
 
@@ -528,6 +564,8 @@ One way to detect outliers is to vizualise them, for example with a boxplot.
 
 ```{r}
 # Boxplot of commute duration
+## base R: 
+# boxplot(mydata$wegdauer)
 ggplot(mydata, aes(y = wegdauer)) +
   geom_boxplot(fill = "#4BADA9") +
   labs(title = "Distribution of Commute Duration",
