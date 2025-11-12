@@ -11,7 +11,7 @@
 
 <meta name="author" content="Felix Degenhardt &amp; Sophie Wagner" />
 
-<meta name="date" content="2025-10-10" />
+<meta name="date" content="2025-11-12" />
 
 <title>Applied Econometrics and Data Science with R - Introduction to Supervised Machine Learning</title>
 
@@ -2843,7 +2843,7 @@ border-radius: 0px;
 <h1 class="title toc-ignore">Applied Econometrics and Data Science with
 R - Introduction to Supervised Machine Learning</h1>
 <h4 class="author">Felix Degenhardt &amp; Sophie Wagner</h4>
-<h4 class="date">2025-10-10</h4>
+<h4 class="date">2025-11-12</h4>
 
 </div>
 
@@ -2944,28 +2944,25 @@ regression as a benchmark model.</p>
 <p>Example:</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a>mydata <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="at">file=</span><span class="st">&quot;../00_data/survey/survey_processed.csv&quot;</span>, <span class="at">header=</span><span class="cn">TRUE</span>, <span class="at">sep=</span><span class="st">&quot;,&quot;</span>)</span></code></pre></div>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="co"># Combines three vectors into a matrix: &#39;risk_affine&#39;, a numeric conversion </span></span>
-<span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a><span class="co"># of &#39;statistiknote_w1&#39; (where commas are replaced by periods and </span></span>
-<span id="cb3-3"><a href="#cb3-3" tabindex="-1"></a><span class="co"># periods are removed), and &#39;paar_schuhe&#39;.</span></span>
-<span id="cb3-4"><a href="#cb3-4" tabindex="-1"></a>reg_data <span class="ot">&lt;-</span> <span class="fu">cbind</span>(mydata<span class="sc">$</span>risk_affine, </span>
-<span id="cb3-5"><a href="#cb3-5" tabindex="-1"></a>                  <span class="fu">as.numeric</span>(<span class="fu">gsub</span>(<span class="st">&quot;,&quot;</span>, <span class="st">&quot;.&quot;</span>, mydata<span class="sc">$</span>statistiknote_w1)), </span>
-<span id="cb3-6"><a href="#cb3-6" tabindex="-1"></a>                  <span class="fu">as.numeric</span>(<span class="fu">gsub</span>(<span class="st">&quot;,&quot;</span>, <span class="st">&quot;.&quot;</span>, mydata<span class="sc">$</span>abiturnote)),</span>
-<span id="cb3-7"><a href="#cb3-7" tabindex="-1"></a>                  mydata<span class="sc">$</span>paar_schuhe)</span>
-<span id="cb3-8"><a href="#cb3-8" tabindex="-1"></a></span>
-<span id="cb3-9"><a href="#cb3-9" tabindex="-1"></a>reg_data <span class="ot">&lt;-</span> <span class="fu">na.omit</span>(reg_data) <span class="co"># Removes rows with any missing values (NA).</span></span>
-<span id="cb3-10"><a href="#cb3-10" tabindex="-1"></a>reg_data <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(reg_data) <span class="co"># Converts the matrix to a data frame.</span></span>
-<span id="cb3-11"><a href="#cb3-11" tabindex="-1"></a><span class="co"># Assigns column names to the data frame.</span></span>
-<span id="cb3-12"><a href="#cb3-12" tabindex="-1"></a><span class="fu">colnames</span>(reg_data) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;risk_affine&quot;</span>, <span class="st">&quot;note&quot;</span>,<span class="st">&quot;abiturnote&quot;</span>, <span class="st">&quot;schuhe&quot;</span>)</span>
-<span id="cb3-13"><a href="#cb3-13" tabindex="-1"></a></span>
-<span id="cb3-14"><a href="#cb3-14" tabindex="-1"></a></span>
-<span id="cb3-15"><a href="#cb3-15" tabindex="-1"></a><span class="co"># Fits a linear regression model where note is the dependent variable and </span></span>
-<span id="cb3-16"><a href="#cb3-16" tabindex="-1"></a><span class="co"># risk_affine is the independent variable, using the data frame reg_data.</span></span>
-<span id="cb3-17"><a href="#cb3-17" tabindex="-1"></a>lm1 <span class="ot">&lt;-</span> <span class="fu">lm</span>(note <span class="sc">~</span> abiturnote, <span class="at">data =</span> reg_data)</span>
-<span id="cb3-18"><a href="#cb3-18" tabindex="-1"></a><span class="co"># Provides a summary of the linear regression model, including coefficients, </span></span>
-<span id="cb3-19"><a href="#cb3-19" tabindex="-1"></a><span class="co"># statistical significance, and model fit statistics.</span></span>
-<span id="cb3-20"><a href="#cb3-20" tabindex="-1"></a><span class="fu">summary</span>(lm1)</span></code></pre></div>
+<span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a><span class="co"># of &#39;statistiknote_w1&#39;, and &#39;paar_schuhe&#39;.</span></span>
+<span id="cb3-3"><a href="#cb3-3" tabindex="-1"></a>reg_data <span class="ot">&lt;-</span> <span class="fu">cbind</span>(mydata<span class="sc">$</span>risk_affine, </span>
+<span id="cb3-4"><a href="#cb3-4" tabindex="-1"></a>                  mydata<span class="sc">$</span>statistiknote_w1, </span>
+<span id="cb3-5"><a href="#cb3-5" tabindex="-1"></a>                  mydata<span class="sc">$</span>abiturnote,</span>
+<span id="cb3-6"><a href="#cb3-6" tabindex="-1"></a>                  mydata<span class="sc">$</span>paar_schuhe)</span>
+<span id="cb3-7"><a href="#cb3-7" tabindex="-1"></a></span>
+<span id="cb3-8"><a href="#cb3-8" tabindex="-1"></a>reg_data <span class="ot">&lt;-</span> <span class="fu">na.omit</span>(reg_data) <span class="co"># Removes rows with any missing values (NA).</span></span>
+<span id="cb3-9"><a href="#cb3-9" tabindex="-1"></a>reg_data <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(reg_data) <span class="co"># Converts the matrix to a data frame.</span></span>
+<span id="cb3-10"><a href="#cb3-10" tabindex="-1"></a><span class="co"># Assigns column names to the data frame.</span></span>
+<span id="cb3-11"><a href="#cb3-11" tabindex="-1"></a><span class="fu">colnames</span>(reg_data) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;risk_affine&quot;</span>, <span class="st">&quot;statistiknote_w1&quot;</span>,<span class="st">&quot;abiturnote&quot;</span>, <span class="st">&quot;paar_schuhe&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a><span class="co"># Fits a linear regression model where note is the dependent variable and </span></span>
+<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a><span class="co"># risk_affine is the independent variable, using the data frame reg_data.</span></span>
+<span id="cb4-3"><a href="#cb4-3" tabindex="-1"></a>lm1 <span class="ot">&lt;-</span> <span class="fu">lm</span>(statistiknote_w1 <span class="sc">~</span> abiturnote, <span class="at">data =</span> reg_data)</span>
+<span id="cb4-4"><a href="#cb4-4" tabindex="-1"></a><span class="co"># Provides a summary of the linear regression model, including coefficients, </span></span>
+<span id="cb4-5"><a href="#cb4-5" tabindex="-1"></a><span class="co"># statistical significance, and model fit statistics.</span></span>
+<span id="cb4-6"><a href="#cb4-6" tabindex="-1"></a><span class="fu">summary</span>(lm1)</span></code></pre></div>
 <pre><code>## 
 ## Call:
-## lm(formula = note ~ abiturnote, data = reg_data)
+## lm(formula = statistiknote_w1 ~ abiturnote, data = reg_data)
 ## 
 ## Residuals:
 ##      Min       1Q   Median       3Q      Max 
@@ -2981,13 +2978,13 @@ regression as a benchmark model.</p>
 ## Residual standard error: 0.7788 on 228 degrees of freedom
 ## Multiple R-squared:  0.04524,    Adjusted R-squared:  0.04105 
 ## F-statistic:  10.8 on 1 and 228 DF,  p-value: 0.001173</code></pre>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a><span class="co"># Fits a similar regression model to before, adding schuhe as another </span></span>
-<span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a><span class="co"># independent variable.</span></span>
-<span id="cb5-3"><a href="#cb5-3" tabindex="-1"></a>lm2 <span class="ot">&lt;-</span> <span class="fu">lm</span>(note <span class="sc">~</span> abiturnote <span class="sc">+</span> schuhe, <span class="at">data =</span> reg_data)</span>
-<span id="cb5-4"><a href="#cb5-4" tabindex="-1"></a><span class="fu">summary</span>(lm2)</span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a><span class="co"># Fits a similar regression model to before, adding schuhe as another </span></span>
+<span id="cb6-2"><a href="#cb6-2" tabindex="-1"></a><span class="co"># independent variable.</span></span>
+<span id="cb6-3"><a href="#cb6-3" tabindex="-1"></a>lm2 <span class="ot">&lt;-</span> <span class="fu">lm</span>(statistiknote_w1 <span class="sc">~</span> abiturnote <span class="sc">+</span> paar_schuhe, <span class="at">data =</span> reg_data)</span>
+<span id="cb6-4"><a href="#cb6-4" tabindex="-1"></a><span class="fu">summary</span>(lm2)</span></code></pre></div>
 <pre><code>## 
 ## Call:
-## lm(formula = note ~ abiturnote + schuhe, data = reg_data)
+## lm(formula = statistiknote_w1 ~ abiturnote + paar_schuhe, data = reg_data)
 ## 
 ## Residuals:
 ##      Min       1Q   Median       3Q      Max 
@@ -2997,7 +2994,7 @@ regression as a benchmark model.</p>
 ##              Estimate Std. Error t value Pr(&gt;|t|)    
 ## (Intercept)  2.231575   0.179609  12.425  &lt; 2e-16 ***
 ## abiturnote   0.340882   0.083676   4.074 6.39e-05 ***
-## schuhe      -0.004192   0.001208  -3.471 0.000621 ***
+## paar_schuhe -0.004192   0.001208  -3.471 0.000621 ***
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
 ## 
@@ -3006,21 +3003,21 @@ regression as a benchmark model.</p>
 ## F-statistic: 11.69 on 2 and 227 DF,  p-value: 1.476e-05</code></pre>
 <p>More advanced regression models can be created using the glm
 command.</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a><span class="co"># Fits a generalized linear model with a logistic regression </span></span>
-<span id="cb7-2"><a href="#cb7-2" tabindex="-1"></a><span class="co"># where risk_affine is the dependent variable, and note and schuhe are </span></span>
-<span id="cb7-3"><a href="#cb7-3" tabindex="-1"></a><span class="co"># independent variables, using the data frame reg_data.</span></span>
-<span id="cb7-4"><a href="#cb7-4" tabindex="-1"></a>glm1 <span class="ot">&lt;-</span> <span class="fu">glm</span>(risk_affine <span class="sc">~</span> abiturnote <span class="sc">+</span> schuhe, <span class="at">data =</span> reg_data, <span class="at">family =</span> binomial)</span>
-<span id="cb7-5"><a href="#cb7-5" tabindex="-1"></a><span class="fu">summary</span>(glm1)</span></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a><span class="co"># Fits a generalized linear model with a logistic regression </span></span>
+<span id="cb8-2"><a href="#cb8-2" tabindex="-1"></a><span class="co"># where risk_affine is the dependent variable, and note and schuhe are </span></span>
+<span id="cb8-3"><a href="#cb8-3" tabindex="-1"></a><span class="co"># independent variables, using the data frame reg_data.</span></span>
+<span id="cb8-4"><a href="#cb8-4" tabindex="-1"></a>glm1 <span class="ot">&lt;-</span> <span class="fu">glm</span>(risk_affine <span class="sc">~</span> abiturnote <span class="sc">+</span> paar_schuhe, <span class="at">data =</span> reg_data, <span class="at">family =</span> binomial)</span>
+<span id="cb8-5"><a href="#cb8-5" tabindex="-1"></a><span class="fu">summary</span>(glm1)</span></code></pre></div>
 <pre><code>## 
 ## Call:
-## glm(formula = risk_affine ~ abiturnote + schuhe, family = binomial, 
+## glm(formula = risk_affine ~ abiturnote + paar_schuhe, family = binomial, 
 ##     data = reg_data)
 ## 
 ## Coefficients:
 ##             Estimate Std. Error z value Pr(&gt;|z|)
 ## (Intercept) -0.44743    0.48465  -0.923    0.356
 ## abiturnote   0.35643    0.22666   1.573    0.116
-## schuhe      -0.01112    0.01508  -0.738    0.461
+## paar_schuhe -0.01112    0.01508  -0.738    0.461
 ## 
 ## (Dispersion parameter for binomial family taken to be 1)
 ## 

@@ -73,22 +73,22 @@ mydata <- read.csv(file="../00_data/survey/survey_processed.csv", header=TRUE, s
 
 ```{r}
 # Combines three vectors into a matrix: 'risk_affine', a numeric conversion 
-# of 'statistiknote_w1' (where commas are replaced by periods and 
-# periods are removed), and 'paar_schuhe'.
+# of 'statistiknote_w1', and 'paar_schuhe'.
 reg_data <- cbind(mydata$risk_affine, 
-                  as.numeric(gsub(",", ".", mydata$statistiknote_w1)), 
-                  as.numeric(gsub(",", ".", mydata$abiturnote)),
+                  mydata$statistiknote_w1, 
+                  mydata$abiturnote,
                   mydata$paar_schuhe)
 
 reg_data <- na.omit(reg_data) # Removes rows with any missing values (NA).
 reg_data <- as.data.frame(reg_data) # Converts the matrix to a data frame.
 # Assigns column names to the data frame.
-colnames(reg_data) <- c("risk_affine", "note","abiturnote", "schuhe")
+colnames(reg_data) <- c("risk_affine", "statistiknote_w1","abiturnote", "paar_schuhe")
+```
 
-
+```{r}
 # Fits a linear regression model where note is the dependent variable and 
 # risk_affine is the independent variable, using the data frame reg_data.
-lm1 <- lm(note ~ abiturnote, data = reg_data)
+lm1 <- lm(statistiknote_w1 ~ abiturnote, data = reg_data)
 # Provides a summary of the linear regression model, including coefficients, 
 # statistical significance, and model fit statistics.
 summary(lm1)
@@ -98,7 +98,7 @@ summary(lm1)
 ```{r}
 # Fits a similar regression model to before, adding schuhe as another 
 # independent variable.
-lm2 <- lm(note ~ abiturnote + schuhe, data = reg_data)
+lm2 <- lm(statistiknote_w1 ~ abiturnote + paar_schuhe, data = reg_data)
 summary(lm2)
 ```
 
@@ -107,7 +107,7 @@ More advanced regression models can be created using the glm command.
 # Fits a generalized linear model with a logistic regression 
 # where risk_affine is the dependent variable, and note and schuhe are 
 # independent variables, using the data frame reg_data.
-glm1 <- glm(risk_affine ~ abiturnote + schuhe, data = reg_data, family = binomial)
+glm1 <- glm(risk_affine ~ abiturnote + paar_schuhe, data = reg_data, family = binomial)
 summary(glm1)
 ```
 

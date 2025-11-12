@@ -173,7 +173,7 @@ The first part of the formula is the usual residual sum of squares, and the seco
 
 
 
-In this tutorial, we'll use the `glmnet`package, which efficiently fits LASSO models `caret` package, which simplifies model tuning and cross-validation. For our study case, we again utilize the student survey. We'll demonstrate how to preprocess the data, train a LASSO model, and interpret the results. The goal will be to predict the expected grade of the statistics exam `statistiknote_w1` using the other variables, while allowing LASSO regression to select the most relevant features.
+In this tutorial, we'll use the `glmnet`package, which efficiently fits LASSO models and the `caret` package, which simplifies model tuning and cross-validation. For our study case, we again utilize the student survey. We'll demonstrate how to preprocess the data, train a LASSO model, and interpret the results. The goal will be to predict the expected grade of the statistics exam `statistiknote_w1` using the other variables, while allowing LASSO regression to select the most relevant features.
 
 
 
@@ -218,36 +218,19 @@ If $\lambda$ is too small, the model might overfit, including irrelevant predict
 # Split the data into training and test data
 set.seed(123) # For reproducibility
 trainIndex <- createDataPartition(data$statistiknote_w1, p = 0.7, list = FALSE)
-nrow(data)
-length(trainIndex)
+#nrow(data)
+#length(trainIndex)
 
 trainData <- data[trainIndex, ]
 testData <- data[-trainIndex, ]
-dim(trainData)
-dim(testData)
+#dim(trainData)
+#dim(testData)
 ```
 
 One important step before running the LASSO model is the **standardization of the predictor variables**. Continuous predictors must scaled to have a mean of 0 and a standard deviation of 1, because the LASSO penalty (L1 norm) depends on the magnitude of the regression coefficients. Without standardization, predictors with larger scales would dominate the penalty term, making LASSO disproportionately shrink the coefficients of variables with smaller scales, even if they are important. Standardizing ensures that all predictors are on the same scale, allowing LASSO to fairly penalize and select the most relevant variables based on their predictive power, not their original units.
 
 *Important:* The order of the data preparation matters! The correct approach is to divide your data into training and test subsets and then apply the standardization (instead of standardizing before splitting). Why does this matter? If you standardize using the entire dataset, you unintentionally expose information from the test set (which you should not know) to the training process. This is known as data leakage.
     
-
-```{r}
-# Standardize the continous predictors 
-
-# Identify the numerical columns, except for 'statistiknote_w1'
-numerical_vars <- setdiff(names(trainData)[sapply(trainData, is.numeric)], "statistiknote_w1")
-
-# Apply pre-processing (center and scale) only to the selected numerical columns
-preProcValues <- preProcess(trainData[, numerical_vars], method = c("center", "scale"))
-
-# Standardize the training data (excluding 'statistiknote_w1')
-trainData[, numerical_vars] <- predict(preProcValues, trainData[, numerical_vars])
-
-# Standardize the test data (excluding 'statistiknote_w1')
-testData[, numerical_vars] <- predict(preProcValues, testData[, numerical_vars])
-```
-
 
 Let's create a visualization of the divided dataset. 
 
@@ -286,7 +269,7 @@ We'll use the `train()` function and specify the method to be cross-validation (
 ![](figures/CV.png)
 
 
-```{r}
+```{r, warning= FALSE}
 set.seed(12345)
 # Set up the training control
 # Define cross-validation as the method and 10 folds 
@@ -294,15 +277,11 @@ train_control <- trainControl(method = "cv", number = 10)
 
 # Train the LASSO model
 lasso_model <- train(
-  # use 'statistiknote_w1' as the dependent and all others as independent variables
   statistiknote_w1 ~ ., 
-  # specify the training data
   data = trainData,
-  # We want to use the LASSO method (glmnet)
   method = "glmnet",
-  # Use the predefined training specification
   trControl = train_control,
-  # Define what values for lambda we should try (tuning)
+  preProcess = c("center", "scale"),
   tuneGrid = expand.grid(alpha = 1, lambda = seq(0.01, 0.2, by = 0.001))  
 )
 
@@ -368,7 +347,7 @@ print(paste0("R-squared: ", r2))
   - If the actual grade is 2.7, the predicted grade could be anywhere from 2.01 to 3.39 on average.
   - If the actual grade is 3.0, the predicted grade might vary between 2.31 and 3.69 on average.
 
-* **Interpretation R-Squared**: 27% of the variance in the test grades is explained by the model's predictors. While the model captures some relationship between the predictors and the test grades, a significant portion of the variability in the test grades remains unexplained.
+* **Interpretation R-Squared**: 30% of the variance in the test grades is explained by the model's predictors. While the model captures some relationship between the predictors and the test grades, a significant portion of the variability in the test grades remains unexplained.
 
 
 
