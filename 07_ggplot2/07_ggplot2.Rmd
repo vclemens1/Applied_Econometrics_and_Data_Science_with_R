@@ -100,6 +100,17 @@ ggplot(data, aes(x = einkommen, y = paar_schuhe))+
 ```
 
 
+Let's get rid of the outliers (or impausible values)!
+
+```{r}
+data <- data %>% 
+          filter(einkommen <= quantile(einkommen, 0.99, na.rm = TRUE))  %>% 
+          filter(wegdauer <= quantile(wegdauer, 0.99, na.rm = TRUE))  %>%   
+          filter(paar_schuhe <= quantile(paar_schuhe, 0.99, na.rm = TRUE))
+```
+
+
+
 ```{r}
 # Creates a basic point plot and add a line layer.
 ggplot(data, aes(x = einkommen, y = paar_schuhe))+
