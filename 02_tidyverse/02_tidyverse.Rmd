@@ -11,7 +11,6 @@ output:
     df_print: paged
 ---
 
-    
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
 ```
@@ -28,14 +27,14 @@ knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
 
 # Base R vs. Packages
 
-So far you've familiarized yourselves with what is called *base R*, functions that are integrated within R and do not require other sources. But the latter are actually the reason why R is so great. It has many contributors that build packages. Never heard of packages? That's because last week, we did not need them because we only relied on functions of base R. We will change this now. 
+So far you've familiarized yourselves with what is called *base R*, functions that are integrated within R and do not require other sources. But the latter are actually the reason why R is so great. It has many contributors that build packages. Never heard of packages? That's because last week, we did not need them because we only relied on functions of base R. We will change this now.
 
-Packages are free libraries that of code that is written by R's user community. Think about it as a program or as a tool that contains functions, syntax, sometimes even data. For example, while you learned the easy use of `lm()` or `glm()` to run regressions, more complicated estimators are not included in base R. Luckily, there are amazing people who share their code in the form of packages and provide simple implementations of more complicated estimators, which means that running an IV, a difference-in-differences approach or more complicated estimations is also a matter of a couple of lines. Same is true for Machine Learning Algorithms which we will see later in the course. 
+Packages are free libraries that of code that is written by R's user community. Think about it as a program or as a tool that contains functions, syntax, sometimes even data. For example, while you learned the easy use of `lm()` or `glm()` to run regressions, more complicated estimators are not included in base R. Luckily, there are amazing people who share their code in the form of packages and provide simple implementations of more complicated estimators, which means that running an IV, a difference-in-differences approach or more complicated estimations is also a matter of a couple of lines. Same is true for Machine Learning Algorithms which we will see later in the course.
 
-You can install a package within R from different sources, but [CRAN](https://cran.r-project.org/) is the default one, which will be the way for this course. Some users also share packages through github or other servers. 
+You can install a package within R from different sources, but [CRAN](https://cran.r-project.org/) is the default one, which will be the way for this course. Some users also share packages through github or other servers.
 
 ```{r}
-##  install.packages("ggplot2")
+### install.packages("ggplot2")
 ```
 
 Once it is installed, the package is on your computer, independent whether you close the current session or not. Usually, we don't want to install a package every time we run the code, so we comment it out or find other solutions to install it only if needed.
@@ -61,15 +60,15 @@ For now, we focus on a universe of packages, the `tidyverse`.
 
 # Introduction to Tidyverse
 
-What's the `tidyverse`? It's (almost) everything a data scientist needs, and it's a great tool for econometricians! Why? Because it helps getting your data tidy! 
+What's the `tidyverse`? It's (almost) everything a data scientist needs, and it's a great tool for econometricians! Why? Because it helps getting your data tidy!
 
 ## What is Tidy Data?
 
 Tidy data is a standardized way of organizing data values within a dataset. According to Hadley Wickham, the creator of the tidyverse, tidy data means:
 
-1. Each variable forms a column.
-2. Each observation forms a row.
-3. Each type of observational unit forms a table.
+1.  Each variable forms a column.
+2.  Each observation forms a row.
+3.  Each type of observational unit forms a table.
 
 ```{r, echo=FALSE, out.width = '75%', fig.align="center", fig.cap="https://r4ds.had.co.nz/tidy-data.html"}
 knitr::include_graphics("tidy-1.png", error = FALSE)
@@ -81,39 +80,41 @@ Even with this, a huge part of working with data is data wrangling, sometimes re
 
 This is important for many reasons:
 
-- It ensures data quality and accuracy and is the key to replicability and work sharing
-- It helps in extracting meaningful insights.
-- It prepares data for analysis and modeling.
+-   It ensures data quality and accuracy and is the key to replicability and work sharing
+-   It helps in extracting meaningful insights.
+-   It prepares data for analysis and modeling.
 
 ## What are the Main Tasks in Data Wrangling?
 
 The main tasks in data wrangling include:
 
-1. **Data Cleaning**: Removing or correcting errors, handling missing values, and ensuring data consistency.
-2. **Data Transformation**: Reshaping data, normalizing, and scaling.
-3. **Data Integration**: Combining data from different sources.
-4. **Data Enrichment**: Enhancing the dataset with additional information.
-5. **Data Reduction**: Simplifying data without losing important information.
+1.  **Data Cleaning**: Removing or correcting errors, handling missing values, and ensuring data consistency.
+2.  **Data Transformation**: Reshaping data, normalizing, and scaling.
+3.  **Data Integration**: Combining data from different sources.
+4.  **Data Enrichment**: Enhancing the dataset with additional information.
+5.  **Data Reduction**: Simplifying data without losing important information.
 
 ## How Does the Tidyverse Help?
 
 The tidyverse is a collection of R packages designed for data science. All packages share an underlying design philosophy, grammar, and data structures. Key packages include:
 
-- **readr**: Provides fast and friendly ways to read rectangular data [see here](#readr)
-- **tibble**: Modern reimagining of data frames [see here](#tibble)
-- **skimr**: A very efficient way to summarise your data [see here](#skimr)
-- **dplyr**: Provides a grammar for data manipulation [see here](#dplyr) 
-- **tidyr**: Helps in tidying data [see here](#tidyr) 
-- **stringr**: Simplifies string operations [see here](#stringr)
-- **ggplot2**: A system for creating graphics -- _later in the course_
-- **purrr**: Enhances R's functional programming tools -- _later in the course_
+-   **readr**: Provides fast and friendly ways to read rectangular data [see here](#readr)
+-   **tibble**: Modern reimagining of data frames [see here](#tibble)
+-   **skimr**: A very efficient way to summarise your data [see here](#skimr)
+-   **dplyr**: Provides a grammar for data manipulation [see here](#dplyr)
+-   **tidyr**: Helps in tidying data [see here](#tidyr)
+-   **stringr**: Simplifies string operations [see here](#stringr)
+-   **ggplot2**: A system for creating graphics -- *later in the course*
+-   **purrr**: Enhances R's functional programming tools -- *later in the course*
 
 It is not important to know what specific purpose a package has, but knowing about the functionalities makes your life way easier. Alternatives: base R (no packages needed!), data.table (which has another syntax and different strenghts) - see an overview of differences [here](https://mgimond.github.io/rug_2019_12/Index.html). Main advantages of the tidyverse: Data wrangling, in a nice, easily understandable way. It is also consistent with ggplot, a main tool to create nice graphs, meaning that it shares a similar syntax logic. Also, the tidyverse logic is consistent across many tidyverse-adjacent packages (see an overview [here](https://www.tidyverse.org/packages/)), and its open-source nature makes abundant sources of information available in forums. Finally, its logic is easily transferable to the most demanded data science tools in companies: pandas and sklearn libraries in python!
 
-An essential part of the course is also to get to know the workflow of a data scientist/econometrician. An essential part is knowing where to look for solutions. To show you how integrated the tidyverse is in the R environment, go to 
+An essential part of the course is also to get to know the workflow of a data scientist/econometrician. An essential part is knowing where to look for solutions. To show you how integrated the tidyverse is in the R environment, go to
 
-    Help -> Cheat Sheet
-    
+```         
+Help -> Cheat Sheet
+```
+
 and you will find a lot of nicely presented information on dplyr, ggplot2 and purrr, which are all essential parts of the tidyverse. Or you can go [here](https://posit.co/resources/cheatsheets/). Additionally, you will learn how to search for problems in forums, github, or large language models (see [here](https://gptup.uni-potsdam.de)) So let's see how this all works in a process of constructing a dataset for analysis.
 
 # Important packages
@@ -122,14 +123,15 @@ First, let's load (and, before, potentially install) the packages - for now the 
 
 ```{r}
 ## install packages (run only if it runs for the first time!)
-# install.packages("tidyverse")
+install.packages("tidyverse")
+install.packages("skimr")
 
 ## open packages
 library(tidyverse)
 library(skimr)
 ```
 
-Noticed the warning? What does it mean? 
+Noticed the warning? What does it mean?
 
 Let's start with some easy examples to show the most important functionalities of each component:
 
@@ -151,7 +153,7 @@ mytibble
 ## dplyr {#dplyr}
 
 `dplyr` is used for data manipulation. It provides a set of verbs to solve common data manipulation challenges and has a user-friendly structure. `dplyr` has many functionalities:
- 
+
 ```{r}
 # mutate creates a new column
 mutate(mytibble, z = 11:15)
@@ -165,7 +167,7 @@ filter(mytibble, y > 8 & x > 4)
 select(mytibble, y)
 ```
 
-Those are the basic functions of `dplyr`, but they are not its biggest strength. It's the coherent logic across all operations and the use of piping! What does it mean? 
+Those are the basic functions of `dplyr`, but they are not its biggest strength. It's the coherent logic across all operations and the use of piping! What does it mean?
 
 `%>%` is the so-called piping operator, and takes a tibble or data frame as input. From there on, functions of dplyr and other tidyverse (adjacent) packages can be added and take the data after previous piping steps. It's like taking an ingredient as an input and then continuing to work on it until the desired output.
 
@@ -178,17 +180,21 @@ mytibble %>%
   select(y)
 ```
 
-::: {.task-box}
+::: task-box
 ### 5-Min Classroom Task dplyr {.unlisted .unnumbered}
 
 Using the `mytibble` dataset, use piping to:
 
-1. Create a new column `w` that is `x * y`
-2. Filter to keep only rows where `w > 30`
-3. Select only columns `x` and `w`
+1.  Create a new column `w` that is `x * y`
+2.  Filter to keep only rows where `w > 30`
+3.  Select only columns `x` and `w`
 
 ```{r, eval=FALSE}
 # Your code here
+mytibble <- mytibble %>%
+  mutate(w = x * y) %>%
+  filter(w > 30) %>%
+  select(x, w)
 
 ```
 :::
@@ -211,18 +217,18 @@ Who taught more courses overall, Sophie or Felix? Don't forget that this is of c
 
 For that, we need to wrangle the data as it does not come in the desired format. This small task will illustrate how to:
 
-* reshape data that is in an undesirable format (untidied!)
-* create new columns
-* filter a data set
-* group data and create summary statistics
-* work with strings in a data set
-* merge two data sets
+-   reshape data that is in an undesirable format (untidied!)
+-   create new columns
+-   filter a data set
+-   group data and create summary statistics
+-   work with strings in a data set
+-   merge two data sets
 
 ## tidyr {#tidyr}
 
-`tidyr` is used for tidying data, making it easier to work with. There is an amazing cheat sheet [here](https://raw.githubusercontent.com/rstudio/cheatsheets/main/tidyr.pdf). 
+`tidyr` is used for tidying data, making it easier to work with. There is an amazing cheat sheet [here](https://raw.githubusercontent.com/rstudio/cheatsheets/main/tidyr.pdf).
 
-For example, we oftentimes get information in different formats than the one needed. Oftentimes, we receive data in wide format, rather than long format. 
+For example, we oftentimes get information in different formats than the one needed. Oftentimes, we receive data in wide format, rather than long format.
 
 ```{r}
 data_long <- data %>% 
@@ -239,7 +245,7 @@ unique(data_long$tutor)
 
 `tidyr` has a lot of other great functions, but we will get to know them by doing!
 
-Now that the data is in the correct format, we can continue with our task. We have to use the `group_by()` function to create columns that count the numbers of courses for Sophie and Felix.  
+Now that the data is in the correct format, we can continue with our task. We have to use the `group_by()` function to create columns that count the numbers of courses for Sophie and Felix.
 
 ```{r}
 # missing values for tutor mean that this course has not been taught, and we're also not interested now in how many courses Aiko taught. So we can filter those out!
@@ -288,7 +294,7 @@ str_c("Hello", "World", sep = " ")
 
 # the str_interp function comes in very handy for generating output of functions. Note that "number1" is a variable, which is added to a string
 
-number1 <- 100
+number1er1 <- 100
 str_interp("This course is ${number1}% awesome")
 
 # There is a base R equivalent, which also works well in simple settings: paste()
@@ -309,7 +315,7 @@ data_long %>%
   summarize(sum_courses = n())
 ```
 
-Great! Finally, let's look at another functionality of `dplyr` that is extremely important for data wrangling: Merging, or joining, data. You will in most of the projects need to combine data. Look at this simplified example, where you have information about the numbers of students in each course. 
+Great! Finally, let's look at another functionality of `dplyr` that is extremely important for data wrangling: Merging, or joining, data. You will in most of the projects need to combine data. Look at this simplified example, where you have information about the numbers of students in each course.
 
 ```{r}
 number_students <- tibble(semester = c("WiSe23", "WiSe23", "SoSe24", "SoSe24", "WiSe24"),
@@ -332,9 +338,9 @@ new_data_long2 <- left_join(data_long, number_students, by = c("course"))
 new_data_long2
 ```
 
-For joining, it's crucial to understand what the unique identifiers are. Also, there are different types of joins, all of which are relevant depending on the setting. You'll find them in the cheat sheet! 
+For joining, it's crucial to understand what the unique identifiers are. Also, there are different types of joins, all of which are relevant depending on the setting. You'll find them in the cheat sheet!
 
-::: {.task-box}
+::: task-box
 ### 2-Min Classroom Task: Joining {.unlisted .unnumbered}
 
 Create a new tibble called `tutor_info` with information about each tutor:
@@ -348,27 +354,29 @@ tutor_info <- tibble(
 
 Now join this information to `data_long` so that each course has the tutor's office number.
 
+new_data_long1 \<- left_join(data_long, number_students, by = c("course" = "course","semester")) new_data_long1
 
 ```{r, eval=FALSE}
 # Your code here
-data_with_office #<-
+data_with_office <- left_join(new_data_long1, tutor_info, by =c("tutor"))
 ```
-What type of join did you use? What happens if you use another one instead? 
+
+What type of join did you use? What happens if you use another one instead?
 :::
 
 # Statistics Student Survey
 
-We are going to load our data from the previous session into R. We will again use the student survey from the introduction to statistics course. This is a csv file. The data will be loaded in a data frame.  
+We are going to load our data from the previous session into R. We will again use the student survey from the introduction to statistics course. This is a csv file. The data will be loaded in a data frame.
 
 This task will illustrate how to work with a larger data set by:
 
-* getting a quick overview of the data
-* recoding erroneous variables or variables that are not ready for quantitative analysis 
-* adding new variables, filtering the data set and making it easier to use by using the piping operator
+-   getting a quick overview of the data
+-   recoding erroneous variables or variables that are not ready for quantitative analysis
+-   adding new variables, filtering the data set and making it easier to use by using the piping operator
 
 ## readr {#readr}
 
-Read csv file and save in tibble called `mydata`. The advantage of `readr` is that it gives some more information and lets you know if something went wrong. 
+Read csv file and save in tibble called `mydata`. The advantage of `readr` is that it gives some more information and lets you know if something went wrong.
 
 ```{r}
 # use readr, which is already in the tidyverse package so we don't have to install readr separately
@@ -385,7 +393,7 @@ The data set already looks quite tidy. It is in rectangular shape and has one ob
 skim(mydata)
 ```
 
-We want to see whether students who are more risk affine are more likely to have better expectations about their statistics exam outcome. 
+We want to see whether students who are more risk affine are more likely to have better expectations about their statistics exam outcome.
 
 ## dplyr
 
@@ -434,24 +442,32 @@ mydata <- mydata %>%
                                    erstfach == 23 ~ "Politikwissenschaft"))
 ```
 
-::: {.task-box}
+::: task-box
 ### 5-Min Classroom Task 3 {.unlisted .unnumbered}
 
 Using the `mydata` dataset and piping:
 
-1. Create a new variable `high_risk` that equals 1 if `risk_affine` is greater than 5, and 0 otherwise
-2. Filter to keep only students with `age` between 18 and 30
-3. Group by `female` and calculate the average `high_risk` for each gender
+1.  Create a new variable `high_risk` that equals 1 if `risk_affine` is greater than 5, and 0 otherwise
+2.  Filter to keep only students with `age` between 18 and 30
+3.  Group by `female` and calculate the average `high_risk` for each gender
 
 **Hint:** Use `mutate()`, `filter()`, `group_by()`, and `summarize()`
 
 ```{r, eval=FALSE}
 # Your code here
-
+mydata %>%
+  # 1. Create high_risk variable
+  mutate(high_risk = if_else(risk_affine > 5, 1, 0)) %>%
+  # 2. Keep only students aged 18–30
+  filter(age >= 18 & age <= 30) %>%
+  # 3. Group by gender and calculate average high_risk
+  group_by(female) %>%
+  summarize(avg_high_risk = mean(high_risk, na.rm = TRUE))
 ```
 :::
 
 # Missing values
+
 We created some variables and are relatively good to go, but there are some things that seem off. First, there is a lot of missing values for the math grade, there are some missing values for statistics grade (our outcome) and risk affinity and there are people with a negative age (we could have noticed before). So let's take care of those.
 
 ```{r}
@@ -462,7 +478,7 @@ mydata <- mydata %>%
 
 ```
 
-Do we really want to just drop missing variables? For example, look at the math grade. There, this is a little more tricky. Missings for the math grade mean that this person has not yet taken the math grade. Does this mean that we should drop this observation? We would probably lose a lot of information there. On the other hand, imputing may create variation that is not there. Every discipline has its own "best practice" of dealing with missing variables. This is an important task in the analysis. In prediction tasks, particularly in business contexts, missing values are oftentimes imputed.  Oftentimes in economics, missing values are dropped. If using surveys, this may however mean that certain individuals were not answering a specific question. Does this affect the results? If so, what are the conditions that need to be fulfilled that it doesn't? Particularly in such contexts, you'd have to provide evidence that it does not change the analysis. 
+Do we really want to just drop missing variables? For example, look at the math grade. There, this is a little more tricky. Missings for the math grade mean that this person has not yet taken the math grade. Does this mean that we should drop this observation? We would probably lose a lot of information there. On the other hand, imputing may create variation that is not there. Every discipline has its own "best practice" of dealing with missing variables. This is an important task in the analysis. In prediction tasks, particularly in business contexts, missing values are oftentimes imputed. Oftentimes in economics, missing values are dropped. If using surveys, this may however mean that certain individuals were not answering a specific question. Does this affect the results? If so, what are the conditions that need to be fulfilled that it doesn't? Particularly in such contexts, you'd have to provide evidence that it does not change the analysis.
 
 There are some approaches that are more and less common, and some are completely safe. Let's have a look at different approaches:
 
@@ -477,26 +493,25 @@ If you have missing values, you may be able to impute them. Common ways are mean
 mydata <- mydata %>% group_by(erstfach_name) %>% mutate(avg_mathenote = mean(mathenote, na.rm = T)) %>% ungroup()
 ```
 
-With mean imputation, we would give all values with a missing `mathenote` the average value of `mathenote`: 
+With mean imputation, we would give all values with a missing `mathenote` the average value of `mathenote`:
+
 ```{r}
 mydata <- mydata %>% mutate(mathenote = if_else(is.na(mathenote), avg_mathenote, mathenote),
                              mathenote = replace_na(mathenote, mean(mathenote, na.rm = T)))
 ```
 
-This may make more sense with grouped means, for example by subject of study. This way, we would give all values with a missing `mathenote` the average value of `mathenote` within each subject. Median imputation works similar, but imputes the median. 
+This may make more sense with grouped means, for example by subject of study. This way, we would give all values with a missing `mathenote` the average value of `mathenote` within each subject. Median imputation works similar, but imputes the median.
 
 What are downsides? You create variation that may not be there, and you want to be really careful with this. There are safe ways to impute, though. Think about this: You run a survey (like the SOEP), interview people repeatedly over the years. In one year, you ask them about their year of birth. In the next year, you don't. Since the birth year is **time-invariant**, you can easily impute it for each person!
 
-
 ## Handling Non-Numeric Variables
 
-Many datasets have non-numeric variables. In this example, `job`, `erstfach_name` and `partei` are categorical variables. K-means clustering works with numerical data and cannot directly handle categorical variables because it calculates the numerical distance between single observations. You cannot simply calculate the numerical distance between categorical variable. 
+Many datasets have non-numeric variables. In this example, `job`, `erstfach_name` and `partei` are categorical variables. K-means clustering works with numerical data and cannot directly handle categorical variables because it calculates the numerical distance between single observations. You cannot simply calculate the numerical distance between categorical variable.
 
-- **Solutions**:
-    - **Binary encoding**: Convert binary variables (e.g., `job`) into 0 (no job) and 1 (has a job). (We have already done this!)
-    - **One-hot encoding**: For variables with multiple categories (e.g., `erstfach_name`), create a separate binary column for each category (e.g., BWL = 1 only if erstfach_name == BWL, else 0, Wirtschaftsinformatik = 1 only if ... ).
-    - **Other clustering algorithms**: E.g. Hierarchical clustering (not treated here!) 
-
+-   **Solutions**:
+    -   **Binary encoding**: Convert binary variables (e.g., `job`) into 0 (no job) and 1 (has a job). (We have already done this!)
+    -   **One-hot encoding**: For variables with multiple categories (e.g., `erstfach_name`), create a separate binary column for each category (e.g., BWL = 1 only if erstfach_name == BWL, else 0, Wirtschaftsinformatik = 1 only if ... ).
+    -   **Other clustering algorithms**: E.g. Hierarchical clustering (not treated here!)
 
 ```{r}
 # four dimensions and one group
@@ -505,10 +520,9 @@ library(fastDummies)
 mydata_one_hot <- dummy_cols(mydata, select_columns = "erstfach_name", remove_first_dummy = TRUE, remove_selected_columns = TRUE)
 ```
 
-
 # Outliers
 
-Let's see how we can deal with outliers. 
+Let's see how we can deal with outliers.
 
 ```{r}
 ## Remove outliers 
@@ -518,13 +532,13 @@ mydata_outliers <- mydata %>% filter(wegdauer < 1000, paar_schuhe < 100, einkomm
 
 ```
 
-We just removed some outliers! But how did we decide on what values to remove? And why would we care about outliers? 
+We just removed some outliers! But how did we decide on what values to remove? And why would we care about outliers?
 
 Outliers are data points that differ significantly from other observations. They can arise due to different reasons, like measurement errors, natural variation like billionaires in income data, or "funnily overstated" answers in surveys.
 
-Outlier detection is super important because outliers can heavily influence regression coefficients and predictions. Regressions are mean-based, so outliers highly affect the outcome. In classification, outliers may cause misclassification or increase model complexity. There is a common example in basic statistics, ["when Bill Gates walks in to a bar"](https://introductorystats.wordpress.com/2011/09/04/when-bill-gates-walks-into-a-bar/): 
+Outlier detection is super important because outliers can heavily influence regression coefficients and predictions. Regressions are mean-based, so outliers highly affect the outcome. In classification, outliers may cause misclassification or increase model complexity. There is a common example in basic statistics, ["when Bill Gates walks in to a bar"](https://introductorystats.wordpress.com/2011/09/04/when-bill-gates-walks-into-a-bar/):
 
-One way to detect outliers is to vizualise them, for example with a boxplot. 
+One way to detect outliers is to vizualise them, for example with a boxplot.
 
 ```{r}
 # Boxplot of commute duration
@@ -536,6 +550,7 @@ ggplot(mydata, aes(y = wegdauer)) +
 ```
 
 Apparently, some student lives really really far away.
+
 ```{r}
 # Look at extreme values
 mydata %>% 
@@ -543,8 +558,8 @@ mydata %>%
   arrange(desc(wegdauer)) %>% 
   head(10)
 ```
-Most probably, though, that's just a non-serious answer.
 
+Most probably, though, that's just a non-serious answer.
 
 Histograms show the distribution more clearly:
 
@@ -557,7 +572,9 @@ ggplot(mydata, aes(x = einkommen)) +
        y = "Count") +
   theme_minimal()
 ```
+
 Let's see what's happening there:
+
 ```{r}
 # Check extreme values
 mydata %>% 
@@ -566,15 +583,14 @@ mydata %>%
   head(10)
 ```
 
-
-::: {.task-box}
+::: task-box
 ### 5-Min Classroom Task: Outliers {.unlisted .unnumbered}
 
 Create a boxplot for the `paar_schuhe` (number of pairs of shoes) variable.
 
-1. Create a boxplot
-2. Look at the top 10 values using `arrange(desc(paar_schuhe))`
-3. What do you think - are there outliers? Are they plausible?
+1.  Create a boxplot
+2.  Look at the top 10 values using `arrange(desc(paar_schuhe))`
+3.  What do you think - are there outliers? Are they plausible?
 
 ```{r, eval=FALSE}
 # Your code here
@@ -582,7 +598,7 @@ Create a boxplot for the `paar_schuhe` (number of pairs of shoes) variable.
 ```
 :::
 
-So how do we decide if a point (or many points) should be removed or transformed? First, like in the `wegdauer` example, you can ask your "gut feeling", or common sense. What's a range that's reasonable? Does it make sense in this context? Is a student really making almost 100k a month? If it is so, will this affect my estimation? 
+So how do we decide if a point (or many points) should be removed or transformed? First, like in the `wegdauer` example, you can ask your "gut feeling", or common sense. What's a range that's reasonable? Does it make sense in this context? Is a student really making almost 100k a month? If it is so, will this affect my estimation?
 
 There are also more technical approaches. Sometimes we don't have strong prior knowledge about what's "reasonable". In that case, we can remove the most extreme values statistically by keeping only observations between certain percentiles.
 
@@ -601,29 +617,18 @@ mydata_percentile <- mydata %>%
 
 There are also more sophisticated statistical methods for detecting outliers:
 
-**IQR Method (Interquartile Range):**
-- Based on the boxplot rule: values beyond 1.5 × IQR from the quartiles
-- Less aggressive than percentiles
-- Good for symmetric distributions
+**IQR Method (Interquartile Range):** - Based on the boxplot rule: values beyond 1.5 × IQR from the quartiles - Less aggressive than percentiles - Good for symmetric distributions
 
-**Z-Score Method:**
-- Measures how many standard deviations away from the mean
-- Typically use |z| > 3 as threshold
-- Assumes normally distributed data
+**Z-Score Method:** - Measures how many standard deviations away from the mean - Typically use \|z\| \> 3 as threshold - Assumes normally distributed data
 
+If you detect outliers, there are possible ways to handle them. Here's an overview: \## Imputation Methods and Issues
 
-If you detect outliers, there are possible ways to handle them. Here's an overview: 
-## Imputation Methods and Issues
-
-| Method               | Description                                           | Issues                                                                 |
-|----------------------|-------------------------------------------------------|------------------------------------------------------------------------|
-| **Removal**           | Exclude rows with outliers.                          | Risks discarding valid but extreme observations, reducing sample size. |
-| **Capping**           | Replace extreme values with thresholds.              | Arbitrary thresholds may distort data distribution.                   |
-| **Transformation**    | Apply log, square root, or other transformations.    | Can oversimplify relationships or make interpretation more complex.    |
-| **Keeping**           | You don't do anything because interesting information may be in outliers | Your estimates or predictions may be heavily distorted, depending of the importance of the outliers | 
-
-
-
+| Method | Description | Issues |
+|----|----|----|
+| **Removal** | Exclude rows with outliers. | Risks discarding valid but extreme observations, reducing sample size. |
+| **Capping** | Replace extreme values with thresholds. | Arbitrary thresholds may distort data distribution. |
+| **Transformation** | Apply log, square root, or other transformations. | Can oversimplify relationships or make interpretation more complex. |
+| **Keeping** | You don't do anything because interesting information may be in outliers | Your estimates or predictions may be heavily distorted, depending of the importance of the outliers |
 
 In the next session, we will need the cleaner version of our student survey. For that, let's save the current version of `mydata` as a csv-file called `survey_processed.csv`
 
@@ -631,21 +636,21 @@ In the next session, we will need the cleaner version of our student survey. For
 write_csv(mydata, "../00_data/survey/survey_processed.csv")
 ```
 
-::: {.task-box}
+::: task-box
 ### 10-Min Classroom Task: Complete Data Wrangling Pipeline {.unlisted .unnumbered}
 
-![](teamwork.png){width=80px fig-align="center"}
+![](teamwork.png){width="80px" fig-align="center"}
 
 Using the **original** `mydata` (reload it with `read_csv()` if needed), create a complete pipeline that:
 
-1. Converts `abiturnote` and `statistiknote_w1` to numeric (remove commas and divide by 100)
-2. Creates a variable `young_student` that equals 1 if the student is 22 or younger
-3. Filters to keep only students who have `risk_affine` information and are younger than 35
-4. Groups by `erstfach` (field of study) and calculates:
-   - The average `statistiknote_w1`
-   - The proportion of `young_student`
-   - The number of students (`n()`)
-5. Arranges the results by average statistics grade (best to worst)
+1.  Converts `abiturnote` and `statistiknote_w1` to numeric (remove commas and divide by 100)
+2.  Creates a variable `young_student` that equals 1 if the student is 22 or younger
+3.  Filters to keep only students who have `risk_affine` information and are younger than 35
+4.  Groups by `erstfach` (field of study) and calculates:
+    -   The average `statistiknote_w1`
+    -   The proportion of `young_student`
+    -   The number of students (`n()`)
+5.  Arranges the results by average statistics grade (best to worst)
 
 **Challenge:** Do this all in ONE piping chain!
 
@@ -658,34 +663,30 @@ mydata <- read_csv(file="../00_data/survey/survey.csv")
 
 # Summary
 
-The great thing about the `tidyverse` is: We can stack a lot of those operations on top of each other. The piping operator *%>%* takes the previous, already manipulated data and applies the function! Also, the piping operator is not sensitive to new lines, so it's super easy to write well-structured data manipulation. 
-
+The great thing about the `tidyverse` is: We can stack a lot of those operations on top of each other. The piping operator *%\>%* takes the previous, already manipulated data and applies the function! Also, the piping operator is not sensitive to new lines, so it's super easy to write well-structured data manipulation.
 
 **What we learned:**
 
-- **Packages** extend R's functionality - install once, load with `library()`
-- **Tidyverse** is a collection of packages for data science
-- **Tidy data** has variables in columns, observations in rows
-- **Key tidyverse tools:**
-  - `readr`: Read data
-  - `tibble`: Modern data frames
-  - `dplyr`: Manipulate data (mutate, filter, select, group_by, summarize)
-  - `tidyr`: Reshape data (pivot_longer, pivot_wider)
-  - `stringr`: Work with strings
-- **Piping (`%>%`)**: Chain operations together for readable code
-- **Data wrangling**: Clean, transform, and prepare data for analysis
+-   **Packages** extend R's functionality - install once, load with `library()`
+-   **Tidyverse** is a collection of packages for data science
+-   **Tidy data** has variables in columns, observations in rows
+-   **Key tidyverse tools:**
+    -   `readr`: Read data
+    -   `tibble`: Modern data frames
+    -   `dplyr`: Manipulate data (mutate, filter, select, group_by, summarize)
+    -   `tidyr`: Reshape data (pivot_longer, pivot_wider)
+    -   `stringr`: Work with strings
+-   **Piping (`%>%`)**: Chain operations together for readable code
+-   **Data wrangling**: Clean, transform, and prepare data for analysis
 
 # Sources {.unlisted .unnumbered}
 
-- Wickham, H., & Grolemund, G. (2017). *R for Data Science*. O'Reilly Media. Available at https://r4ds.had.co.nz/
+-   Wickham, H., & Grolemund, G. (2017). *R for Data Science*. O'Reilly Media. Available at <https://r4ds.had.co.nz/>
 
-- Wickham, H., et al. (2019). Welcome to the Tidyverse. *Journal of Open Source Software*, 4(43), 1686. https://doi.org/10.21105/joss.01686
+-   Wickham, H., et al. (2019). Welcome to the Tidyverse. *Journal of Open Source Software*, 4(43), 1686. <https://doi.org/10.21105/joss.01686>
 
-- RStudio. (n.d.). *Tidyverse Cheat Sheets*. Retrieved from https://posit.co/resources/cheatsheets/
+-   RStudio. (n.d.). *Tidyverse Cheat Sheets*. Retrieved from <https://posit.co/resources/cheatsheets/>
 
-- Wickham, H. (n.d.). *Tidy Data*. Retrieved from https://r4ds.had.co.nz/tidy-data.html
+-   Wickham, H. (n.d.). *Tidy Data*. Retrieved from <https://r4ds.had.co.nz/tidy-data.html>
 
-&nbsp;
-\
-  
-
+ \

@@ -68,7 +68,7 @@ We can run regressions using the `lm()` function.
 
 Example: 
 ```{r}
-mydata <- read.csv(file="../00_data/survey/survey_processed.csv", header=TRUE, sep=",")
+mydata <- read.csv(file="../00_data/survey.csv", header=TRUE, sep=",")
 ```
 
 ```{r}

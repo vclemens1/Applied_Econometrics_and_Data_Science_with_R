@@ -403,6 +403,8 @@ sum(is.na(mydata$computer)) # Prints the number if missing for the variable 'com
 
 ```
 
+df <- read.delim("../Data/survey.csv", header=TRUE, sep=",")
+sett
 ## Correlations
 We can construct a table with correlations for the numeric variables.
 

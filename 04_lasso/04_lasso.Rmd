@@ -254,8 +254,6 @@ Let's create a visualization of the divided dataset.
 
 ```{r, warnings = FALSE}
 
-library(waffle)
-
 # Calculate the number of points in train and test subsets
 train_size <- nrow(trainData)
 test_size <- nrow(testData)
@@ -263,11 +261,6 @@ test_size <- nrow(testData)
 # Create a data frame with the counts for waffle plot
 data_proportion <- c(`Train Data` = train_size, `Test Data` = test_size)
 
-# Create the waffle plot
-waffle(data_proportion / sum(data_proportion) * 100, 
-       rows = 10, # Adjust number of rows for granularity
-       title = "Proportion of Data Points in Training and Test Sets",
-       colors = c("#44AA99", "#CC6677"))
 
 ```
 
@@ -427,8 +420,104 @@ In summary, LASSO regression is a powerful technique that adds regularization to
   * **1. Train LASSO:** Use the provided train/test split to fit a LASSO model predicting `mathenote`. Report the selected variables.
   * **2. OLS baseline:** Fit an ordinary least squares model on the same predictors and outcome.
   * **3. Compare:** Do the LASSO-selected variables overlap with the statistically significant OLS variables? 
+
+```{r}
+set.seed(123456)
+# -------------------------
+# 1. LASSO Model
+# -------------------------
+
+# Ensure outcome is numeric and predictors are numeric or factors
+# caret::train with glmnet will automatically create dummy variables for factors
+train_control <- trainControl(method = "cv", number = 10)
+
+# Train LASSO model predicting mathenote
+lasso_model <- train(
+  mathenote ~ ., 
+  data = trainData,
+  method = "glmnet",
+  trControl = train_control,
+  tuneGrid = expand.grid(alpha = 1, lambda = seq(0.01, 0.2, by = 0.001))
+)
+
+# Display the best lambda
+print(lasso_model$bestTune)
+
+# Plot cross-validation results
+plot(lasso_model)
+
+# Extract LASSO-selected variables (non-zero coefficients at best lambda)
+lasso_coefs <- coef(lasso_model$finalModel, s = lasso_model$bestTune$lambda)
+lasso_selected <- rownames(lasso_coefs)[lasso_coefs[,1] != 0]
+lasso_selected <- lasso_selected[lasso_selected != "(Intercept)"]
+cat("Variables selected by LASSO:\n")
+print(lasso_selected)
+
+# -------------------------
+# 2. OLS Baseline
+# -------------------------
+
+# Build formula with all predictors
+ols_formula <- as.formula(
+  paste("mathenote ~", paste(names(trainData)[names(trainData) != "mathenote"], collapse = " + "))
+)
+
+# Fit OLS model
+ols_model <- lm(ols_formula, data = trainData)
+
+# Summary of OLS
+summary(ols_model)
+
+# Extract statistically significant variables at 5% level
+ols_significant <- names(coef(ols_model))[which(summary(ols_model)$coefficients[,4] < 0.05)]
+ols_significant <- ols_significant[ols_significant != "(Intercept)"]
+cat("Significant variables in OLS:\n")
+print(ols_significant)
+
+# -------------------------
+# 3. Compare LASSO vs OLS
+# -------------------------
+
+overlap_vars <- intersect(lasso_selected, ols_significant)
+cat("Variables selected by LASSO AND significant in OLS:\n")
+print(overlap_vars)
+
+# -------------------------
+# 4. Optional: Visual Comparison (tidyverse version)
+# -------------------------
+
+library(tidyr)  # make sure tidyr is loaded
+
+# Extract OLS coefficients (exclude intercept)
+ols_coefs <- coef(ols_model)[-1]
+
+# Create a combined dataframe for plotting
+coef_df <- data.frame(
+  Variable = names(ols_coefs),
+  OLS = ols_coefs,
+  LASSO = as.numeric(lasso_coefs[names(ols_coefs), 1])
+)
+
+# Replace NA (for variables dropped by LASSO) with 0
+coef_df$LASSO[is.na(coef_df$LASSO)] <- 0
+
+# Pivot longer for ggplot
+coef_long <- coef_df %>%
+  pivot_longer(cols = c("OLS", "LASSO"), names_to = "Model", values_to = "Coefficient")
+
+# Plot comparison
+ggplot(coef_long, aes(x = reorder(Variable, Coefficient), y = Coefficient, fill = Model)) +
+  geom_bar(stat = "identity", position = "dodge") +
+  coord_flip() +
+  labs(title = "Comparison of OLS vs LASSO Coefficients",
+       y = "Coefficient Value", x = "Variable") +
+  theme_minimal(base_size = 13)
+
+```
   
 :::
+
+
 
 
 # Sources {.unlisted .unnumbered}
