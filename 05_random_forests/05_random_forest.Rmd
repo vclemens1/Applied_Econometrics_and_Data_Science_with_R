@@ -392,6 +392,7 @@ for(i in seq_len(nrow(tuning_grid))) { # Iterates over each row of the tuning_gr
   verbose    = FALSE,
   seed       = 123
   )
+  
   # Stores the RMSE of the model in the rmse column of tuning_grid for the 
   # corresponding number of trees. The RMSE is calculated as the square root 
   # of the fit$prediction.error.
@@ -409,9 +410,9 @@ ggplot(tuning_grid, aes(trees, rmse)) +
   geom_line()
 ```
 
-We don't see a very clear pattern, but after about 150 trees, the prediction error does not change much anymore. Notice, that the value range on the y-axis is very narrow.
+We don't see a very clear pattern, but after about 20 trees, the prediction error does not change much anymore. Notice, that the value range on the y-axis is very narrow.
 
-Now, we select a sufficient number of tree and assume `ntree`$=150$ is fixed. Using again the cross-validation approach included in the `caret` package, we tune the remaining parameter `mtry` and `min.node.size`. 
+Now, we select a sufficient number of tree and assume `ntree`$=20$ is fixed. Using again the cross-validation approach included in the `caret` package, we tune the remaining parameter `mtry` and `min.node.size`. 
 
 
 ```{r}
@@ -423,7 +424,7 @@ We specify the values to be considered and also define the `splitrule`, as this 
 
 ```{r}
 tune_grid <- expand.grid(
-  mtry = seq(2,4,0.05),  # Number of variables randomly sampled at each split
+  mtry = seq(2,5,1),  # Number of variables randomly sampled at each split
   splitrule = "gini", # Number of trees in the forest
   min.node.size = c(1, 5, 10) # Minimum size of terminal nodes
 )
