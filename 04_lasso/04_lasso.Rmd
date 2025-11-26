@@ -344,8 +344,8 @@ print(paste0("R-squared: ", r2))
 ```
 
 * **Interpretation RMSE**: On average, the predicted test grades differ from the actual test grades by 0.62 grade points. Given that the test grades increase in 0.3 increments, a 0.62 RMSE implies that the model's predictions are approximately two increments (2 × 0.3 = 0.6) away from the actual grades. This means:
-  - If the actual grade is 2.7, the predicted grade could be anywhere from 2.01 to 3.39 on average.
-  - If the actual grade is 3.0, the predicted grade might vary between 2.31 and 3.69 on average.
+  - If the actual grade is 2.7, the predicted grade could be anywhere from 2.1 to 3.3 on average.
+  - If the actual grade is 3.0, the predicted grade might vary between 2.4 and 3.6 on average.
 
 * **Interpretation R-Squared**: 30% of the variance in the test grades is explained by the model's predictors. While the model captures some relationship between the predictors and the test grades, a significant portion of the variability in the test grades remains unexplained.
 
@@ -409,6 +409,34 @@ In summary, LASSO regression is a powerful technique that adds regularization to
   
 :::
 
+```{r}
+## 1) 
+train_control <- trainControl(method = "cv", number = 10)
+
+# Train the LASSO model
+lasso_model <- train(
+  mathenote ~ ., 
+  data = trainData,
+  method = "glmnet",
+  trControl = train_control,
+  preProcess = c("center", "scale"),
+  tuneGrid = expand.grid(alpha = 1, lambda = seq(0.01, 0.2, by = 0.001))  
+)
+
+# Display the best lambda value and model summary
+print(lasso_model$bestTune)
+#print(lasso_model)
+
+coef(lasso_model$finalModel, lasso_model$bestTune$lambda)
+
+
+## 2) 
+pp <- preProcess(trainData, method= c("center", "scale"))
+train_scaled <- predict(pp, trainData)
+
+lm1 <- lm(mathenote  ~ ., data = train_scaled)
+summary(lm1)
+```
 
 # Sources {.unlisted .unnumbered}
 
