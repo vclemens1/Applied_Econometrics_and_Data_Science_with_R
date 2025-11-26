@@ -623,31 +623,15 @@ legend("bottomright",
 
 ![](teamwork.png){width=60px fig-align="center"}
 
-Your task is to run a naive logistic LASSO model and compute the AUC. Does it perform better or worse than the logistic regression and the random forest?
+Task: train a random forest using **statistiknote_w1** as the outcome and **female, risk_affine, fachsemester , erstfach_name, alkohol** as the potential predictors. Assume to use 20 trees and find the best value of mtry! How well is our regression random forest performing?
 
 ```{r,message = F}
 
-library(glmnet); library(pROC)
+library(ranger)
 
-# Formula as in the random forest and logistic regression
-form <- risk_affine ~ female + statistiknote_w1 + fachsemester + erstfach_name + alkohol
+#1) Train the RF
 
-# Train and test matrices for LASSO
-x_train  <- model.matrix(form, trainData)[, -1]
-x_test  <- model.matrix(form, testData)[, -1]
-y_train  <- as.integer(trainData$risk_affine == "1")
-y_test  <- factor(testData$risk_affine, levels = c("0","1"))
-
-# Naice CV and LASSO Model
-cv     <- cv.glmnet(x_train, y_train, family = "binomial", alpha = 1)
-lasso  <- glmnet(x_train, y_train, family = "binomial", alpha = 1, lambda = cv$lambda.min)  
-
-# YOUR TASK: 
-
-# 1) Use the LASSO model to predict the outcome using the x_test matrix (containing all X variables)
-
-
-# 2) Calculate the AUC using the predictions and the actual outcome y_test
+#2) What measure can we use to evaluate the performance?
 
 ```
 :::
