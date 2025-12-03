@@ -632,7 +632,30 @@ library(ranger)
 
 #1) Train the RF
 
+tune_grid_2 <- expand.grid(
+  mtry = seq(2,5,1),  # Number of variables randomly sampled at each split
+  splitrule = "variance", # Number of trees in the forest
+  min.node.size = c(5, 10, 15) # Minimum size of terminal nodes
+)
+
+set.seed(123) # Set seed for reproducibility 
+rf_model <- train(
+  statistiknote_w1 ~ female + risk_affine + fachsemester + 
+                erstfach_name + alkohol, 
+  data = trainData, 
+  method = "ranger",             
+  trControl = train_control, 
+  tuneGrid = tune_grid_2, 
+  num.trees = 20                
+)
+
+# Print the best model and results
+print(rf_model)
+
 #2) What measure can we use to evaluate the performance?
+
+rf_prob_pred <- predict(rf_model, data = testData)
+RMSE(rf_prob_pred, testData$statistiknote_w1)
 
 ```
 :::
